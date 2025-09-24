@@ -566,6 +566,7 @@
     - item: Screwdriver
     - item: Wirecutter
     - item: WelderIndustrial
+    - item: NaniteApplicator # Monolith
     - item: Multitool
   - type: BorgModuleIcon
     icon: { sprite: Interface/Actions/actions_borg.rsi, state: tool-module }
@@ -694,6 +695,7 @@
     - item: PowerDrill
     - item: WelderExperimental
     - item: Multitool
+    - item: NaniteApplicatorExperimental # Monolith
     - item: RemoteSignallerAdvanced
     - item: NFWeaponHoloflareGun # DeltaV
   - type: BorgModuleIcon
