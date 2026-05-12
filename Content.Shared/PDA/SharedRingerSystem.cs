@@ -2,6 +2,7 @@ using Content.Shared.Mind;
 using Content.Shared.PDA.Ringer;
 using Content.Shared.Popups;
 using Content.Shared.Roles;
+using Content.Shared.Silicons.StationAi; // DeltaV - StationAI: Send PDA ringer sound to the player directly
 using Content.Shared.Store;
 using JetBrains.Annotations;
 using Robust.Shared.Audio;
@@ -55,6 +56,22 @@ public abstract class SharedRingerSystem : EntitySystem
             if (curTime < ringer.NextNoteTime.Value)
                 continue;
 
+            // DeltaV Start - StationAI: Send PDA ringer sound to the player directly
+            // Check if a StationAI owns this ringer. If so, the sound needs to play so that it is audible for the StationAI (not from the PDA's location)
+            if (HasComp<StationAiHeldComponent>(uid))
+            {
+                if (_net.IsServer)
+                {
+                    _audio.PlayGlobal(
+                        GetSound(ringer.Ringtone[ringer.NoteCount]),
+                        Filter.Entities(uid),
+                        true,
+                        AudioParams.Default.WithVolume(ringer.Volume)
+                    );
+                }
+            }
+            else
+            // DeltaV End - StationAI: Send PDA ringer sound to the player directly
             // Play the note
             // We only do this on the server because otherwise the sound either dupes or blends into a mess
             // There's no easy way to figure out which player started it, so that we can exclude them from the list
