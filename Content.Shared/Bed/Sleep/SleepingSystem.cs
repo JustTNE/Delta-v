@@ -20,6 +20,7 @@ using Content.Shared.Slippery;
 using Content.Shared.Sound;
 using Content.Shared.Sound.Components;
 using Content.Shared.Speech;
+using Content.Shared.SSDIndicator;
 using Content.Shared.StatusEffectNew;
 using Content.Shared.Stunnable;
 using Content.Shared.Traits.Assorted;
@@ -137,10 +138,15 @@ public sealed partial class SleepingSystem : EntitySystem
             return;
         }
 
-        _stun.TryUnstun(ent.Owner);
-        _stun.TryStanding(ent.Owner);
+        // BEGIN DeltaV - Stop SSD People from spamming stand doafter
+        if (TryComp<SSDIndicatorComponent>(ent, out var ssd) && !ssd.IsSSD)
+        {
+            _stun.TryUnstun(ent.Owner);
+            _stun.TryStanding(ent.Owner);
 
-        RemComp<SpamEmitSoundComponent>(ent);
+            RemComp<SpamEmitSoundComponent>(ent);
+        }
+        // END DeltaV
     }
 
     private void OnCompInit(Entity<SleepingComponent> ent, ref ComponentInit args)
