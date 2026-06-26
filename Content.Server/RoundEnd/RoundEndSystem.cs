@@ -337,6 +337,11 @@ namespace Content.Server.RoundEnd
         {
             switch (behavior)
             {
+                // BEGIN DeltaV - Convert Round To Survival
+                case RoundEndBehavior.BecomeSurvival:
+                    _gameTicker.ConvertRoundToSurvival();
+                    break;
+                // END DeltaV
                 case RoundEndBehavior.InstantEnd:
                     EndRound();
                     break;
@@ -417,6 +422,11 @@ namespace Content.Server.RoundEnd
         /// <summary>
         /// Do nothing
         /// </summary>
-        Nothing
+        Nothing,
+
+        /// <summary>
+        /// DeltaV - Replace scheduler. Crew should call for evac.
+        /// </summary>
+        BecomeSurvival,
     }
 }
